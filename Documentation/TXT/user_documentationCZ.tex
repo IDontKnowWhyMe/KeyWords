@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+\title{Uživatelská dokumentace pro klicova$\_$slova}
+\author{Lukáš Štupák}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Použití}
+\begin{lstlisting}[language=bash]
+perl klicova_slova.pl [moznosti]
+\end{lstlisting}
+
+Extrahuje a seřadí klíčová slova z textu poskytnutého na standardním vstupu.
+
+\section{Možnosti}
+\begin{itemize}
+  \item \texttt{--stopwords DIR}: Cesta ke slovníku stop slov (výchozí: stopwords).
+  \item \texttt{--lang LANG}: Jazyk pro stemování a stop slova (výchozí: cs).
+  \item \texttt{--num\_keywords NUM}: Počet výstupních klíčových slov (výchozí: 10).
+  \item \texttt{--output\_format FMT}: Formát výstupu (text, json, csv) (výchozí: text).
+  \item \texttt{--help}: Zobrazí tuto nápovědu.
+\end{itemize}
+
+\section{Popis}
+Skript \texttt{script.pl} extrahuje a seřadí klíčová slova z vstupního textu. Načte stop slova ze souboru a použije algoritmus TextRank k určení důležitosti slov. Výsledná klíčová slova se vypíšou na standardní výstup ve formátu specifikovaném možností \texttt{--output\_format}.
+
+\section{Příklady použití}
+\begin{enumerate}
+  \item Extrahovat a vypsat 10 klíčových slov z vstupního textu:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl
+  \end{lstlisting}
+
+  \item Extrahovat a vypsat 5 klíčových slov z vstupního textu ve formátu JSON:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl --num_keywords 5 --output_format json
+  \end{lstlisting}
+
+  \item Extrahovat a vypsat 15 klíčových slov z vstupního textu do CSV souboru:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl --num_keywords 15 --output_format csv > keywords.csv
+  \end{lstlisting}
+\end{enumerate}
+
+\section{Poznámky}
+\begin{itemize}
+  \item Skript předpokládá, že balíčky Lingua::Stem::Snowball a Getopt::Long jsou nainstalovány. Pokud nejsou, můžete je nainstalovat pomocí následujících příkazů:
+  \begin{lstlisting}[language=bash]
+  cpan Lingua::Stem::Snowball
+  cpan Getopt::Long
+  \end{lstlisting}
+
+  \item Skript očekává, že stop slova pro zvolený jazyk jsou k dispozici ve souboru s názvem \texttt{<lang>.txt} v adresáři \texttt{stopwords}, kde \texttt{<lang>} je kód jazyka (např. "cs" pro češtinu). Pokud takový soubor neexistuje, skript bude pokračovat bez použití stop slov.
+
+  \item Vstupní text je očekáván na standardním vstupu. Můžete jej zadat ručně nebo upravit zdrojový kód skriptu tak, aby četl z jiného zdroje.
+\end{itemize}
+
+\end{document}

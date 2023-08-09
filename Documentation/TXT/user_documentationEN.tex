@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+\title{User Documentation for klicova$\_$slova.pl}
+\author{Lukáš Štupák}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Usage}
+\begin{lstlisting}[language=bash]
+perl klicova_slova.pl [options]
+\end{lstlisting}
+
+Extracts and ranks keywords from text provided on standard input.
+
+\section{Options}
+\begin{itemize}
+  \item \texttt{--stopwords DIR}: Path to stopwords directory (default: stopwords).
+  \item \texttt{--lang LANG}: Language for stemming and stop words(opt: cz, sk, en) (default: en).
+  \item \texttt{--num\_keywords NUM}: Number of keywords to output (default: 10).
+  \item \texttt{--output\_format FMT}: Output format (text, json, csv) (default: text).
+  \item \texttt{--help}: Show this help message.
+\end{itemize}
+
+\section{Description}
+The \texttt{script.pl} script extracts and ranks keywords from the input text. It loads stop words from the corresponding file and uses the TextRank algorithm to determine the importance of words. The resulting keywords are printed to the standard output in the format specified by the \texttt{--output\_format} option.
+
+\section{Examples}
+\begin{enumerate}
+  \item Extract and print 10 keywords from the input text:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl
+  \end{lstlisting}
+
+  \item Extract and print 5 keywords from the input text in JSON format:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl --num_keywords 5 --output_format json
+  \end{lstlisting}
+
+  \item Extract and print 15 keywords from the input text to a CSV file:
+  \begin{lstlisting}[language=bash]
+  perl klicova_slova.pl --num_keywords 15 --output_format csv > keywords.csv
+  \end{lstlisting}
+\end{enumerate}
+
+\section{Notes}
+\begin{itemize}
+  \item The script assumes that the Lingua::Stem::Snowball and Getopt::Long packages are installed. If not, you can install them using the following commands:
+  \begin{lstlisting}[language=bash]
+  cpan Lingua::Stem::Snowball
+  cpan Getopt::Long
+  \end{lstlisting}
+
+  \item The script expects that the stop words for the specified language are available in a file named \texttt{<lang>.txt} in the \texttt{stopwords} directory, where \texttt{<lang>} is the language code (e.g., "en" for English). If such a file does not exist, the script will continue without using stop words.
+
+  \item The input text is expected to be provided on the standard input. You can enter it manually or modify the script's source code to read from a different source.
+\end{itemize}
+
+\end{document}
